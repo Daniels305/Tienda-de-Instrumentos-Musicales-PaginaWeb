@@ -1,285 +1,162 @@
 <?php
-include("admin/bd.php");
+// Catálogo de instrumentos integrado en PHP (No requiere MySQL externo)
+$instrumentos = [
+    [
+        "nombre" => "Guitarra Eléctrica Fender Stratocaster",
+        "categoria" => "Cuerdas",
+        "precio" => "$3.850.000 COP",
+        "stock" => "Disponible (5 unidades)",
+        "imagen" => "https://images.unsplash.com/photo-1564186763535-ebb21ef5277f?auto=format&fit=crop&w=600&q=80",
+        "descripcion" => "Sonido clásico y versátil con cuerpo de aliso y tres pastillas single-coil."
+    ],
+    [
+        "nombre" => "Batería Acústica Pearl Export",
+        "categoria" => "Percusión",
+        "precio" => "$4.200.000 COP",
+        "stock" => "Disponible (2 unidades)",
+        "imagen" => "https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?auto=format&fit=crop&w=600&q=80",
+        "descripcion" => "Set completo de 5 piezas con platillos y herrajes de alta resistencia."
+    ],
+    [
+        "nombre" => "Teclado Sintetizador Yamaha MX61",
+        "categoria" => "Teclados",
+        "precio" => "$3.100.000 COP",
+        "stock" => "Disponible (4 unidades)",
+        "imagen" => "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=600&q=80",
+        "descripcion" => "Más de 1000 sonidos integrados, conexión USB Audio/MIDI y diseño ligero."
+    ],
+    [
+        "nombre" => "Bajo Eléctrico Ibanez GSR200",
+        "categoria" => "Cuerdas",
+        "precio" => "$1.450.000 COP",
+        "stock" => "Disponible (7 unidades)",
+        "imagen" => "https://images.unsplash.com/photo-1550291652-6ea9114a47b1?auto=format&fit=crop&w=600&q=80",
+        "descripcion" => "Ecualizador activo Phat II que añade potencia adicional de graves."
+    ],
+    [
+        "nombre" => "Micrófono Condensador Shure SM7B",
+        "categoria" => "Audio Profesional",
+        "precio" => "$1.890.000 COP",
+        "stock" => "Últimas 3 unidades",
+        "imagen" => "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=600&q=80",
+        "descripcion" => "Ideal para grabación de estudio, voces e instrumentos con aislamiento acústico."
+    ],
+    [
+        "nombre" => "Guitarra Acústica Taylor 114ce",
+        "categoria" => "Cuerdas",
+        "precio" => "$3.500.000 COP",
+        "stock" => "Disponible (6 unidades)",
+        "imagen" => "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=600&q=80",
+        "descripcion" => "Tapa de abeto Sitka macizo con sistema electrónico ES2 integrado."
+    ]
+];
 
-$sentencia=$conexion->prepare("SELECT * FROM `servicios`");
-$sentencia->execute();
-$lista_servicios=$sentencia->fetchAll(PDO::FETCH_ASSOC);
-
-$sentencia=$conexion->prepare("SELECT * FROM `portafolio`");
-$sentencia->execute();
-$lista_portafolio=$sentencia->fetchAll(PDO::FETCH_ASSOC);
-
-$sentencia=$conexion->prepare("SELECT * FROM `entradas`");
-$sentencia->execute();
-$lista_entradas=$sentencia->fetchAll(PDO::FETCH_ASSOC);
-
-$sentencia=$conexion->prepare("SELECT * FROM `equipo`");
-$sentencia->execute();
-$lista_equipo=$sentencia->fetchAll(PDO::FETCH_ASSOC);
-
+$servidor_azure = gethostname();
+$fecha_actual = date("d/m/Y H:i");
 ?>
-
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Crazy Strings</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/icono.png" />
-        <!-- Font Awesome icons (free version)-->
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-        <!-- Google fonts-->
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
-    </head>
-    <body id="page-top">
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
-            <div class="container">
-                <a class="navbar-brand" href="#page-top"><img src="assets/img/logoTienda.png" width="175" /></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i class="fas fa-bars ms-1"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="#services">Servicios</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#portfolio">Productos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#about">Sobre nosotros</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#team">Equipo</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact">Contactanos</a></li>
-                    </ul>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrazyStrings | Tienda de Instrumentos en Azure</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1400&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+        }
+        .card-img-top {
+            height: 220px;
+            object-fit: cover;
+        }
+        .badge-cloud {
+            background-color: #0078d4;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">🎸 CrazyStrings Cloud</a>
+            <span class="badge badge-cloud text-white p-2">Desplegado en Microsoft Azure (Brazil South)</span>
+        </div>
+    </nav>
+
+    <!-- Encabezado principal -->
+    <header class="hero text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold">CrazyStrings Music Store</h1>
+            <p class="lead mb-4">Plataforma de comercio electrónico de instrumentos musicales alojada en Azure App Service (PaaS)</p>
+            <a href="#catalogo" class="btn btn-primary btn-lg px-4">Ver Catálogo de Instrumentos</a>
+        </div>
+    </header>
+
+    <!-- Catálogo de productos -->
+    <main class="container my-5" id="catalogo">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold text-dark">Catálogo Disponible</h2>
+            <span class="text-muted">Total referencias activas: <strong><?php echo count($instrumentos); ?></strong></span>
+        </div>
+
+        <div class="row g-4">
+            <?php foreach ($instrumentos as $item): ?>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <img src="<?php echo $item['imagen']; ?>" class="card-img-top" alt="<?php echo $item['nombre']; ?>">
+                        <div class="card-body d-flex flex-column">
+                            <div class="mb-2">
+                                <span class="badge bg-secondary"><?php echo $item['categoria']; ?></span>
+                                <span class="badge bg-success"><?php echo $item['stock']; ?></span>
+                            </div>
+                            <h5 class="card-title fw-bold"><?php echo $item['nombre']; ?></h5>
+                            <p class="card-text text-muted flex-grow-1"><?php echo $item['descripcion']; ?></p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                                <span class="fs-5 fw-bold text-primary"><?php echo $item['precio']; ?></span>
+                                <button class="btn btn-outline-dark btn-sm" onclick="alert('Producto agregado: <?php echo $item['nombre']; ?>')">Comprar</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Panel técnico para el profesor -->
+        <div class="card mt-5 border-primary shadow-sm">
+            <div class="card-header bg-primary text-white fw-bold">
+                Información de Infraestructura Cloud (Evidencia Académica)
             </div>
-        </nav>
-        <!-- Masthead-->
-        <header class="masthead">
-            <div class="container">
-                <div class="masthead-subheading">Bienvenido a Tu Estudio Musical!</div>
-                <div class="masthead-heading text-uppercase">Encantado de Conocerte</div>
-                <a class="btn btn-primary btn-xl text-uppercase" href="#services">Saber mas</a>
-            </div>
-        </header>
-        <!-- Services-->
-        <section class="page-section" id="services">
-            <div class="container">
-                <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Servicios</h2>
-                    <br><br>
-                </div>
-                <div class="row text-center">
-                    <?php
-                    foreach($lista_servicios as $registros){
-                    ?>
+            <div class="card-body">
+                <div class="row">
                     <div class="col-md-4">
-                        <span class="fa-stack fa-4x">
-                            <i class="fas fa-circle fa-stack-2x text-primary"></i>
-                            <i class="fas <?php echo $registros["icono"]; ?> fa-stack-1x fa-inverse"></i>
-                        </span>
-                        <h4 class="my-3"><?php echo $registros["titulo"]; ?></h4>
-                        <p class="text-muted"><?php echo $registros["descripcion"]; ?></p><br>
+                        <p class="mb-1"><strong>Servicio Cloud:</strong> Azure App Service (Linux)</p>
+                        <p class="mb-0"><strong>Motor de ejecución:</strong> PHP <?php echo phpversion(); ?></p>
                     </div>
-                    <?php
-                    }
-                    ?>
-                </div>
-            </div>
-        </section>
-        <!-- Portfolio Grid-->
-        <section class="page-section bg-light" id="portfolio">
-            <div class="container">
-                <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Productos</h2>
-                    <br><br>
-                </div>
-                <div class="row">
-
-                    <?php
-                    foreach($lista_portafolio as $registros){
-                    ?>
-                    <div class="col-lg-4 col-sm-6 mb-4">
-                        <div class="portfolio-item">
-                            <a class="portfolio-link" data-bs-toggle="modal" href="#portfolioModal<?php echo $registros["ID"]; ?>">
-                                <div class="portfolio-hover">
-                                    <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
-                                </div>
-                                <img class="img-fluid" src="assets/img/portfolio/<?php echo $registros["imagen"]; ?>" alt="..." />
-                            </a>
-                            <div class="portfolio-caption">
-                                <div class="portfolio-caption-heading"><?php echo $registros["titulo"]; ?></div>
-                                <div class="portfolio-caption-subheading text-muted"><?php echo $registros["subtitulo"]; ?></div>
-                            </div>
-                        </div>
+                    <div class="col-md-4">
+                        <p class="mb-1"><strong>Instancia Servidor:</strong> <?php echo $servidor_azure; ?></p>
+                        <p class="mb-0"><strong>Despliegue continuo:</strong> GitHub CI/CD Activo</p>
                     </div>
-
-                    <div class="portfolio-modal modal fade" id="portfolioModal<?php echo $registros["ID"]; ?>" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="close-modal" data-bs-dismiss="modal"><img src="assets/img/close-icon.svg" alt="Close modal" /></div>
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-8">
-                                <div class="modal-body">
-                                    <!-- Project details-->
-                                    <h2 class="text-uppercase"><?php echo $registros["titulo"]; ?></h2>
-                                    <p class="item-intro text-muted"><?php echo $registros["subtitulo"]; ?></p>
-                                    <img class="img-fluid d-block mx-auto" src="assets/img/portfolio/<?php echo $registros["imagen"]; ?>" alt="..." />
-                                    <p><?php echo $registros["descripcion"]; ?></p>
-                                    <ul class="list-inline">
-                                        <li>
-                                            <strong>Categoria:</strong>
-                                            <?php echo $registros["categoria"]; ?>
-                                        </li>
-                                        <li>
-                                            <strong>Ubicación donde se encuentra el producto:</strong>
-                                            <?php echo $registros["ubicacion"]; ?>
-                                        </li>
-                                    </ul>
-                                    <button class="btn btn-primary btn-xl text-uppercase" data-bs-dismiss="modal" type="button">
-                                        <i class="fas fa-xmark me-1"></i>
-                                        Cerrar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-md-4">
+                        <p class="mb-1"><strong>Región de Datos:</strong> Brazil South</p>
+                        <p class="mb-0"><strong>Hora del Servidor:</strong> <?php echo $fecha_actual; ?> UTC</p>
                     </div>
                 </div>
             </div>
         </div>
-                    <?php
-                    }
-                    ?>
-                </div>
-            </div>
-        </section>
-        <!-- About-->
-        <section class="page-section" id="about">
-            <div class="container">
-                <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Sobre nosotros</h2>
-                    <br><br>
-                </div>
-                
-                <ul class="timeline">
-                    <?php
-                    $contador=1;
-                    foreach($lista_entradas as $registros){
+    </main>
 
-                    ?>
-                    <li <?php echo (($contador%2)==0)?'class="timeline-inverted"':""; ?> >
-                        <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/<?php echo $registros["imagen"]; ?>" alt="..." /></div>
-                        <div class="timeline-panel">
-                            <div class="timeline-heading">
-                                <h4 class="subheading"><?php echo $registros["titulo"]; ?></h4>
-                            </div>
-                            <div class="timeline-body"><p class="text-muted"><?php echo $registros["descripcion"]; ?></p></div>
-                        </div>
-                    </li>
-                    <?php
-                    $contador++;
-                    }
-                    ?>
-
-                    <li class="timeline-inverted">
-                        <div class="timeline-image">
-                            <h4>
-                                Se Parte
-                                <br />
-                                De Nuestra
-                                <br />
-                                Historia!
-                            </h4>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </section>
-        <!-- Team-->
-        <section class="page-section bg-light" id="team">
-            <div class="container">
-                <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Equipo</h2>
-                    <br><br>
-                </div>
-                <div class="row">
-                    <?php
-                    foreach($lista_equipo as $registros){
-                    ?>
-                    <div class="col-lg-4">
-                        <div class="team-member">
-                            <img class="mx-auto rounded-circle" src="assets/img/team/<?php echo $registros["imagen"]; ?>" alt="..." />
-                            <h4><?php echo $registros["nombre_completo"]; ?></h4><br>
-                            <p class="text-muted"><?php echo $registros["puesto"]; ?></p>
-                        </div>
-                    </div>
-                    <?php
-                    }
-                    ?>
-                </div>
-                <div class="row">
-
-                </div>
-            </div>
-        </section>
-        <!-- Clients-->
-        <div class="py-5">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/microsoft.svg" alt="..." aria-label="Microsoft Logo" /></a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/google.svg" alt="..." aria-label="Google Logo" /></a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/facebook.svg" alt="..." aria-label="Facebook Logo" /></a>
-                    </div>
-                    <div class="col-md-3 col-sm-6 my-3">
-                        <a href="#!"><img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/ibm.svg" alt="..." aria-label="IBM Logo" /></a>
-                    </div>
-                </div>
-            </div>
+    <!-- Pie de página -->
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p class="mb-0">© 2026 CrazyStrings - Proyecto Final de Computación en la Nube | UNIMINUTO</p>
         </div>
-        <!-- Contact-->
-        <section class="page-section" id="contact">
-            <div class="container">
-                <div class="text-center">
-                    <h2 class="section-heading text-uppercase">Contactanos</h2><br>
-                    <h3 class="section-subheading text-muted">crazy.strings@gmail.com</h3>
-                    <h3 class="section-subheading text-muted">313-237-1441</h3>
-                </div>
+    </footer>
 
-            </div>
-        </section>
-        <!-- Footer-->
-        <footer class="footer py-4">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-4 text-lg-start">Copyright &copy; Crazy Strings 2023</div>
-                    <div class="col-lg-4 my-3 my-lg-0">
-                        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    </div>
-                    <div class="col-lg-4 text-lg-end">
-                        <a class="link-dark text-decoration-none me-3" href="#!">Politica de Privacidad</a>
-                        <a class="link-dark text-decoration-none" href="#!">Terminos de Uso</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <!-- * *                               SB Forms JS                               * *-->
-        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-    </body>
+</body>
 </html>
